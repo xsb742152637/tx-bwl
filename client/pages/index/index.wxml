@@ -1,0 +1,18 @@
+<view class="container">
+    <view class="noteInfo">
+      <block wx:for="{{noteInfo}}" wx:key="uniqueId">
+        <view class='note' bindtap='readDetail' id='{{item.uniqueId}}'>
+          <view class='detail'>
+            <view class='detTitle'>{{item.title}}</view>
+            <view class='detSysTime'>{{item.sysTime}}</view>
+          </view>
+          <view class='detContent'>{{item.content}}</view>
+        </view>
+      </block>
+    </view>
+
+    <view class='my-view-bottom'>
+      <icon class='wriete-button' type="clear" size="35" color="#19A7EF" bindtap='write'/>
+    </view>
+    
+</view>

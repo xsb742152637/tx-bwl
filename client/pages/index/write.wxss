@@ -1,0 +1,40 @@
+/* pages/index/write.wxss */
+/**index.wxss**/
+page {
+    background: #F6F6F6;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+form{
+  width: 95%;
+}
+.row{
+    display: flex;
+    align-items: center;
+}
+.row input,.row textarea{
+    font-size: 0.9rem;
+    color: #555;
+    flex-grow: 3;
+    display: inline-block;
+    border-radius: 0.3rem;
+    padding: 10rpx;
+    background: #fafafa;
+    margin-bottom: 10rpx;
+}
+.row textarea{
+  min-height: 400px;
+}
+.row button{
+    padding: 0 2rem;
+}
+
+.view-button{
+  position:absolute;
+  bottom:20rpx;
+  width:100%;
+}
+.view-button>button{
+  width:40%;
+}
