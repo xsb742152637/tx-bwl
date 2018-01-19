@@ -1,5 +1,5 @@
 // pages/index/write.js
-var util = require('../../utils/util.js')
+var util = require('../../../utils/util.js')
 
 Page({
 
@@ -30,7 +30,8 @@ Page({
         title = content.split("<br>")[0];
         title = title.length > 10 ? title.substring(0, 10):title;
       }
-      var str = '{"uniqueId":"' + key + '","title":"' + title + '","content":"' + content + '","sysTime":"' + util.formatTime(d)+'"}';
+      var str = '{"uniqueId":"' + key + '","title":"' + title + '","content":"' + content + '","sysTime":"' + util.formatTime(d) + '","weekDay":"' + util.getWeekDay(d) +'"}';
+
       // 同步方式存储表单数据
       wx.setStorage({
         key: key,
@@ -55,16 +56,14 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
-    if (options.uniqueId != undefined && options.uniqueId != ""){
+    if (options.uniqueId != undefined && options.uniqueId != "") {
       //获取本地数据
       wx.getStorage({
         key: options.uniqueId,
         success: function (res) {
           var obj = JSON.parse(res.data);
           obj.content = obj.content.replace(/<br>/g, "\n");
-          that.setData({ uniqueId: obj.uniqueId });
-          that.setData({ title: obj.title });
-          that.setData({ content: obj.content });
+          that.setData({ uniqueId: obj.uniqueId, title: obj.title, content: obj.content });
         }
       });
     }

@@ -5,15 +5,6 @@ page {
     flex-direction: column;
     justify-content: flex-start;
 }
-.weui-panel{
-  margin-top: 2px;
-}
-.weui-media-box{
-  padding:1px 15px 8px 25px;
-}
-.weui-panel__hd:after{
-  border: none;
-}
 .page__bd{
     height: 100%;
 }
@@ -40,8 +31,8 @@ page {
   flex-direction: row;
 }
 .detTitle{
-  font-size: 18px;
-  color: #000;
+  font-size: 15px;
+  color: #555;
 }
 .noteInfo .detType{
     border: 1px #F6F6F6 solid;

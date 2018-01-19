@@ -1,0 +1,33 @@
+<!--pages/index/write.wxml-->
+<!--pages/index/writeShop.wxml-->
+<view class="page"  style="height:{{container_height}}">
+    <form bindsubmit="formSubmit">
+    <view class="page__bd">
+        <view class="weui-cells weui-cells_after-title detTop">
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label" style='width:55px;'>标题：</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input name="title" value='{{title}}' class="weui-input"/>
+                </view>
+            </view>
+        </view>
+
+        <view class="weui-cells weui-cells_after-title detTextArea">
+            <view class="weui-cell">
+                <view class="weui-cell__bd">
+                    <textarea value='{{content}}' name="content" class="weui-textarea" placeholder="正文：" style="height: 15em" />
+                  
+                </view>
+            </view>
+        </view>
+        <view class="view-button">
+            <button type="primary" form-type="submit" style="float:left;margin-left:25rpx;">保存</button>
+            <button id="{{uniqueId}}" bindtap='deleteDetail' style="float:rightmargin-right:50rpx;background-color:#efefef;">删除</button>
+        </view>
+    </view>
+
+    </form>
+</view>
+

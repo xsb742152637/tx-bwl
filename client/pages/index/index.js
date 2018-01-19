@@ -2,34 +2,37 @@
 var qcloud = require('../../vendor/wafer2-client-sdk/index')
 var config = require('../../config')
 var util = require('../../utils/util.js')
+var sliderWidth = 96; // 需要设置slider的宽度，用于计算中间位置
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    userInfo: {},
-    logged: false,
-    takeSession: false,
     requestResult: '',
-    noteInfo:{}
+    noteInfo: {},
+    shopInfo: {},
+    newNote:[],
+    newShop:[],
+    weekShop:0
   },
-  write:function(){
-    //跳转到成功页面
+  noteInfo:function(e){
     wx.navigateTo({
-      url: 'write'
+      url: 'note/index'
     })
   },
-  readDetail:function(e){
+  shopInfo: function (e) {
     wx.navigateTo({
-      url: 'write?uniqueId='+e.currentTarget.id
+      url: 'shop/index'
     })
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
+    // wx.navigateTo({
+    //   url: 'writeShop'
+    // })
   },
 
   /**
@@ -44,35 +47,65 @@ Page({
    */
   onShow: function () {
     //wx.clearStorage();//清空本地存储
+
     var that = this;
+
+    var now = new Date(); 
+    var monday = util.getMonDay(now);
+    var sunday = util.getSunDay(now);
+
+    console.log(monday);
+    console.log(sunday);
+    console.log("-----------------------");
     that.setData({ noteInfo: {} });
+    that.setData({ shopInfo: {} });  
     wx.getStorageInfo({
       success: function (res) {
-        console.log(res);
-        if (res.keys.length < 1) {
-          var str = '{"uniqueId":"","title":"暂无记录","content":"","sysTime":""}';
-          var noteInfo = that.data.noteInfo;
-          noteInfo[key] = JSON.parse(str);
-          that.setData({ noteInfo: noteInfo });
-        } else {
+        var noteInfo = new Array();//笔记列表
+        var shopInfo = new Array();//消费列表
+        var weekShop = 0;//本周消费
+
+        if (res.keys.length > 0) {
           for (var i = res.keys.length - 1; i >= 0; i--) {
             var key = res.keys[i]
-            if (key.indexOf("write_") >= 0) {
+            if (key.indexOf("write_") >= 0 || key.indexOf("writeShop_") >= 0) {
               var value = wx.getStorageSync(key)
               try {
                 var obj = JSON.parse(value);
-                obj["sysTime"] = obj.sysTime.substring(0, 16);
-                obj["content"] = obj.content.split("<br>")[0];
-                var noteInfo = that.data.noteInfo;
-                noteInfo[key] = obj;
-                that.setData({ noteInfo: noteInfo });
+                obj["sysTime"] = obj.sysTime.substring(0, 10)+"     ";
+                if (key.indexOf("write_") >= 0){
+                  obj["content"] = obj.content.split("<br>")[0];
+                  noteInfo.push(obj);
+                } else if (key.indexOf("writeShop_") >= 0){
+
+                  var st = new Date(obj.sysTime);
+                  console.log(st);
+                  if (monday <= st && sunday >= st){
+                    weekShop += parseFloat(obj.shopMoney);
+                  }
+                  obj["shopMoney"] = parseFloat(obj.shopMoney).toFixed(2);
+                  shopInfo.push(obj);
+                }
+                
               } catch (e) {
-                wx.removeStorageSync(key)
+                console.log(e);
+                // wx.removeStorageSync(key)
               }
               
-            }
+            } 
           }
         }
+
+        weekShop = parseFloat(weekShop).toFixed(2);
+        if (noteInfo.length < 1) {
+          var str = '{"uniqueId":"","title":"暂无笔记","content":"暂无笔记","sysTime":"","weekDay":""}';
+          noteInfo.push(JSON.parse(str));
+        } if (shopInfo.length < 1) {
+          var str = '{"uniqueId":"","shopMoney":"0.00","shopTypeUID":"0","shopType":"无","shopComment":"暂无消费","sysTime":"","weekDay":""}';
+          shopInfo.push(JSON.parse(str));
+        }
+        that.setData({ noteInfo: noteInfo, shopInfo: shopInfo, newNote: noteInfo[0], newShop: shopInfo[0], weekShop: weekShop });
+        
       }
     })
   },

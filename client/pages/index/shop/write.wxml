@@ -1,0 +1,62 @@
+<!--pages/index/writeShop.wxml-->
+<view class="page">
+    <form bindsubmit="formSubmit">
+    <view class="page__bd">
+        <view class="weui-cells weui-cells_after-title detTop">
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label" style='width:75px;'>消费金额：</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input type='digit' name="shopMoney" value='{{shopMoney}}' class="weui-input" placeholder="请输入消费金额"/>
+                </view>
+            </view>
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label" style='width:75px;'>消费类型：</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+                      <view class="shopType">
+                          <input name="shopType" class="weui-input shopType_text" value="{{shopType}}"  placeholder="请选择消费类型" disabled='disabled' style="width:100%;"/>
+                          <view class='shopType_ch'>→</view>
+                      </view>
+                    </picker>
+                </view>
+            </view>
+            
+        </view>
+        <view class="weui-cells__tips addShopType"><view>没有想要的类型？</view><view bindtap='addShopType' style='color:#f00'>加一项</view></view>
+        <view class="weui-cells weui-cells_after-title {{addShopTypeShow?'addShopTypeInputShow':'addShopTypeInputHide'}}" >
+            <view class="weui-cell weui-cell_input" style='position:relative'>
+                <view class="weui-cell__hd">
+                    <view class="weui-label" style='width:75px;'>类型名称：</view>
+                </view>
+                <view class="weui-cell__bd ">
+                    <input name="addShopTypeName" class="weui-input" placeholder="请输入类型名称"/>
+                </view>
+                <!-- <view class='shopTypeButton' bindtap='addType' style='position:absolute;right:5px;'>添加</view> -->
+            </view>
+            <!-- <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__bd ">
+                    
+                </view>
+            </view> -->
+        </view>
+
+        <view class="weui-cells weui-cells_after-title detTextArea">
+            <view class="weui-cell">
+                <view class="weui-cell__bd">
+                    <textarea value='{{shopComment}}' name="shopComment" class="weui-textarea" placeholder="消费说明：" style="height: 8em" />
+                  
+                </view>
+            </view>
+        </view>
+        <view class="view-button">
+            <button type="primary" form-type="submit" style="float:left;margin-left:25rpx;">保存</button>
+            <button id="{{uniqueId}}" bindtap='deleteDetail' style="float:rightmargin-right:50rpx;background-color:#efefef;">删除</button>
+        </view>
+    </view>
+
+    </form>
+</view>

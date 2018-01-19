@@ -1,14 +1,16 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/index/write",
-    "pages/addCgi/addCgi"
+    "pages/index/note/index",
+    "pages/index/note/write",
+    "pages/index/shop/index",
+    "pages/index/shop/write"
   ],
   "window":{
     "backgroundColor":"#F6F6F6",
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "笔记列表",
+    "navigationBarTitleText": "贴心备忘录",
     "navigationBarTextStyle":"black"
   }
 }
