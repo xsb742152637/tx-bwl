@@ -52,11 +52,11 @@ Page({
 
     var now = new Date(); 
     var monday = util.getMonDay(now);
-    var sunday = util.getSunDay(now);
+    var sunday = util.getNextMonDay(now);
 
-    console.log(monday);
-    console.log(sunday);
-    console.log("-----------------------");
+    // console.log(monday);
+    // console.log(sunday);
+    // console.log("-----------------------");
     that.setData({ noteInfo: {} });
     that.setData({ shopInfo: {} });  
     wx.getStorageInfo({
@@ -79,8 +79,11 @@ Page({
                 } else if (key.indexOf("writeShop_") >= 0){
 
                   var st = new Date(obj.sysTime);
-                  console.log(st);
-                  if (monday <= st && sunday >= st){
+                  // console.log(st.getTime());
+                  // console.log(monday.getTime() == st.getTime());
+                  // console.log(sunday.getTime() >= st.getTime());
+                  // console.log("..............................");
+                  if (monday.getTime() <= st.getTime() && sunday.getTime() > st.getTime()){
                     weekShop += parseFloat(obj.shopMoney);
                   }
                   obj["shopMoney"] = parseFloat(obj.shopMoney).toFixed(2);

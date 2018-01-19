@@ -28,18 +28,23 @@ const getMonDay = date => {
   var MondayTime = nowTime - (day - 1) * oneDayTime;
   //初始化日期时间
   var monday = new Date(MondayTime);
+  var str = formatTime(monday);
+  monday = new Date(str.substring(0,10));
+
   return monday;
 }
-//得到本周的周一
-const getSunDay = date => {
+//得到下周一的日期
+const getNextMonDay = date => {
   var nowTime = date.getTime();
   var day = date.getDay();
   var oneDayTime = 24 * 60 * 60 * 1000;
 
   //显示周日
-  var SundayTime = nowTime + (7 - day) * oneDayTime;
+  var SundayTime = nowTime + (7+1 - day) * oneDayTime;
   //初始化日期时间
   var sunday = new Date(SundayTime);
+  var str = formatTime(sunday);
+  sunday = new Date(str.substring(0, 10));
   return sunday;
 }
 
@@ -67,4 +72,4 @@ var showModel = (title, content) => {
     })
 }
 
-module.exports = { formatTime, showBusy, showSuccess, showModel, getWeekDay, getMonDay, getSunDay }
+module.exports = { formatTime, showBusy, showSuccess, showModel, getWeekDay, getMonDay, getNextMonDay }

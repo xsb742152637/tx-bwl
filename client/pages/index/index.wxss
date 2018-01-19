@@ -5,12 +5,24 @@ page {
     flex-direction: column;
     justify-content: flex-start;
 }
+.page{
+  background-color:#fff;
+}
 .weui-panel{
-  margin-top: 2px;
+  margin: 0px 0px 0px 15px;
 }
 .weui-media-box{
-  padding:1px 15px 8px 25px;
+  padding:1px 15px 10px 10px;
 }
+.weui-panel:before {
+  border: none;
+}
+
+.weui-panel:after {
+  border:none;
+  border-bottom:1rpx solid #e5e5e5;
+}
+
 .weui-panel__hd:after{
   border: none;
 }
@@ -34,6 +46,8 @@ page {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding:10px 15px 8px 0px;
+
 }
 .detHdLeft{
   display: flex;
