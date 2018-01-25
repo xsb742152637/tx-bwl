@@ -2,7 +2,9 @@
 var qcloud = require('../../vendor/wafer2-client-sdk/index')
 var config = require('../../config')
 var util = require('../../utils/util.js')
+var wxCharts = require('../../wxcharts.js');
 var sliderWidth = 96; // 需要设置slider的宽度，用于计算中间位置
+
 Page({
 
   /**
@@ -14,9 +16,32 @@ Page({
     shopInfo: {},
     newNote:[],
     newShop:[],
-    weekShop:0
-  },
-  noteInfo:function(e){
+    weekShop:0,
+    winWidth:300,
+    array: [
+      { "uniqueId": "0", "name": "本周", "checked": "true" }, 
+      { "uniqueId": "1", "name": "本月" }, 
+      { "uniqueId": "2", "name": "全部"}],
+    defType:"本周"
+  }, radioChange: function (e) {
+    var array = this.data.array;
+    var defType = 0;
+    for (var i = 0, len = array.length; i < len; ++i) {
+      
+      if (array[i].uniqueId == e.detail.value){
+        array[i].checked = true;
+        defType = array[i].name;
+      }else{
+        array[i].checked = false;
+      }
+      
+    }
+
+    this.setData({
+      array: array, defType: defType
+    });
+    this.onShow()
+  }, noteInfo:function(e){
     wx.navigateTo({
       url: 'note/index'
     })
@@ -60,6 +85,9 @@ Page({
     var that = this;
 
     var now = new Date(); 
+    var monthNum = now.getMonth();
+    var yearNum = now.getFullYear();
+
     var monday = util.getMonDay(now);
     var sunday = util.getNextMonDay(now);
     //  console.log(monday);
@@ -67,6 +95,24 @@ Page({
     // console.log("-----------------------");
     that.setData({ noteInfo: {} });
     that.setData({ shopInfo: {} });  
+
+    var sysRes = wx.getSystemInfoSync()
+    that.setData({winWidth:sysRes.windowWidth})
+    var payTypeInfo = new Array();
+    var otherPay = 0//其它支付
+    var allMoney = 0//总金额
+    var storaRes = wx.getStorageInfoSync()
+    if (storaRes.keys.length > 0) {
+      for (var i = storaRes.keys.length - 1; i >= 0; i--) {
+        var key = storaRes.keys[i]
+        if (key.indexOf("payType_") >= 0) {
+          var value = wx.getStorageSync(key)
+          var obj = JSON.parse(value);
+          payTypeInfo.push(obj);
+        }
+      }
+    }
+  
     wx.getStorageInfo({
       success: function (res) {
         var noteInfo = new Array();//笔记列表
@@ -80,13 +126,31 @@ Page({
               var value = wx.getStorageSync(key)
               try {
                 var obj = JSON.parse(value);
+                var st = new Date(obj.sysTime);
                 obj["sysTime"] = obj.sysTime.substring(0, 16)+"     ";
                 if (key.indexOf("write_") >= 0){
                   obj["content"] = obj.content.split("<br>")[0];
                   noteInfo.push(obj);
                 } else if (key.indexOf("writeShop_") >= 0){
-
-                  var st = new Date(obj.sysTime);
+                  var money = parseFloat(obj.shopMoney)
+                  var isHave = false;
+                  if ((that.data.defType == "本周" && monday.getTime() <= st.getTime() && sunday.getTime() > st.getTime()) || (that.data.defType == "本月" && monthNum == st.getMonth() && yearNum == st.getFullYear()) || that.data.defType == "全部"){
+                    for (var j = 0; j < payTypeInfo.length; j++) {
+                      if (obj.payTypeUID == payTypeInfo[j].uniqueId) {
+                        var ct = payTypeInfo[j].ct;
+                        if (ct == null) {
+                          ct = 0;
+                        }
+                        payTypeInfo[j]["ct"] = money + ct
+                        isHave = true
+                      }
+                    }
+                    if (!isHave) {
+                      otherPay += money
+                    }
+                    allMoney += money
+                  }
+                  
                   // console.log(st.getTime());
                   // console.log(monday.getTime() == st.getTime());
                   // console.log(sunday.getTime() >= st.getTime());
@@ -105,8 +169,38 @@ Page({
               
             } 
           }
-        }
+          if (allMoney > 0) {
+            try{
+              var cInfo = new Array()
+              var bl = 100 / allMoney
+              for (var m = 0; m < payTypeInfo.length; m++) {
+                var ct = payTypeInfo[m].ct;
+                if (ct != null && ct > 0) {
+                  var d = parseFloat(ct) * bl
+                  d = parseFloat(d).toFixed(2);
+                  var chartsInfo2 = "{ \"name\":\"" + payTypeInfo[m].name + "：" + parseFloat(ct).toFixed(2)+"￥\" , \"data\":  "+ d+" }"
+                  cInfo.push(JSON.parse(chartsInfo2))
+                }
+              }
+              if (otherPay > 0) {
+                
+                cInfo.push(JSON.parse("{ \"name\":\"其它：" + parseFloat(otherPay).toFixed(2)+"￥\" , \"data\": " + parseFloat(parseFloat(otherPay) * bl).toFixed(2) + " }"))
+              }
 
+              new wxCharts({
+                canvasId: 'pieCanvas',
+                type: 'pie',
+                series: cInfo,
+                width: sysRes.windowWidth,
+                height: 300,
+                dataLabel: true
+              });
+            }catch(e){
+              console.log(e)
+            }
+            
+          }
+        }
         weekShop = parseFloat(weekShop).toFixed(2);
         if (noteInfo.length < 1) {
           var str = '{"uniqueId":"","title":"暂无笔记","content":"暂无笔记","sysTime":"","weekDay":""}';
