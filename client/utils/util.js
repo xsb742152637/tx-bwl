@@ -22,6 +22,9 @@ const getWeekDay = date => {
 const getMonDay = date => {
   var nowTime = date.getTime();
   var day = date.getDay();
+  if (day == 0){
+    day = 7;
+  }
   var oneDayTime = 24 * 60 * 60 * 1000;
 
   //显示周一
@@ -38,7 +41,9 @@ const getNextMonDay = date => {
   var nowTime = date.getTime();
   var day = date.getDay();
   var oneDayTime = 24 * 60 * 60 * 1000;
-
+  if (day == 0) {
+    day = 7;
+  }
   //显示周日
   var SundayTime = nowTime + (7+1 - day) * oneDayTime;
   //初始化日期时间

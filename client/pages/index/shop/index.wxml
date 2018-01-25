@@ -5,24 +5,38 @@
               <view class="weui-panel" bindtap='readDetail' id='{{item.uniqueId}}'>
                 <view class="weui-panel__hd detHd">
                     <view class='detHdLeft'>
-                        <view class='detType'>{{item.shopType}}</view>
-                        <view class='detMoney'>{{item.shopMoney}}￥</view>
+                        <view class='detType'wx:for="{{item.shopType}}" wx:key="uniqueId">{{item}}</view>
+                    </view>
+                    <view class='detPay'>{{item.payType}}</view> 
+                </view>
+                <view class="weui-panel__hd detHd">
+                    <view class='detMoney'>
+                        {{item.shopMoney}}￥
                     </view>
                     
                     <view class='detSysTime'>{{item.sysTime}}</view>
                 </view>
-                <view class="weui-panel__bd">
+                <!-- <view class="weui-panel__bd">
                     <view class="weui-media-box weui-media-box_text">
                         <view class="weui-media-box__desc detContent">{{item.shopComment}}</view> 
                     </view>
-                </view>
+                </view> -->
             </view>
 
           </block>
         </view>
         
         <view class='my-view-bottom'>
-          <icon class='wriete-button' type="clear" size="35" color="#19A7EF" bindtap='write'/>
+          <view class='my-view-bottom-left'>
+            月消费：{{monthMoney}}￥
+          </view>
+          <view class='my-view-bottom-center'>
+            <icon class='wriete-button' type="clear" size="35" color="#19A7EF" bindtap='write'/>
+          </view>
+          <view class='my-view-bottom-right'>
+            总消费：{{totalMoney}}￥
+          </view>
+          
         </view>
     </view>
 </view>

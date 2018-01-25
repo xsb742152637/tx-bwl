@@ -40,11 +40,16 @@ page {
     border-radius: 6rpx;
     background-color: #2ccd70;
     color: #fff;
+    margin:0px 3px;
+}
+.noteInfo .detPay{
+    border: 1px #F6F6F6 solid;
+    padding: 5rpx 20rpx;
+    border-radius: 6rpx;
+    background-color: #28468c;
+    color: #fff;
 }
 .noteInfo .detMoney{
-  margin-left: 20rpx;
-
-  border-left: 1px #ccc solid;
   padding: 0rpx 20rpx;
   color: #555;
   font-size:15px;
@@ -64,6 +69,19 @@ page {
   text-align: center;
   padding-top: 15rpx;
   border-top: 1px solid rgba(0, 0, 0, .1);
+  flex-direction:row;
+  justify-content:space-between;
+  align-items:center;
+  display:flex;
+
+}
+.my-view-bottom-left{
+  font-size:15px;
+  padding-left:10px;
+}
+.my-view-bottom-right{
+  font-size:15px;
+  padding-right:10px;
 }
 /*新增笔记按钮*/
 .wriete-button{

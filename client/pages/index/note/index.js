@@ -57,7 +57,7 @@ Page({
               try {
                 var obj = JSON.parse(value);
                 // obj["sysTime"] = obj.sysTime.substring(0, 10) + "  " + that.getWeekDay(new Date(obj.sysTime));
-                obj["sysTime"] = obj.sysTime.substring(0, 10) + "  " + (obj.weekDay ? obj.weekDay:"");
+                obj["sysTime"] = obj.sysTime.substring(0, 16) + "  " + (obj.weekDay ? obj.weekDay:"");
                 obj["content"] = obj.content.split("<br>")[0];
                 noteInfo.push(obj);
               } catch (e) {

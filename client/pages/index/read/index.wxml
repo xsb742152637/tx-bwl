@@ -1,0 +1,19 @@
+<!--pages/index/read/index.wxml-->
+<view class="page">
+  <view class='read-title'><text decode="{{true}}">{{title}}</text></view>
+  <view class='read-center'>
+    <text decode="{{true}}">{{center}}</text>
+  </view>
+    
+    
+  <view class='my-view-bottom'>
+    <view class='my-view-bottom-left' bindtap='clickPrev'>
+      上一页
+    </view>
+    <view class='my-view-bottom-center'></view>
+    <view class='my-view-bottom-right' bindtap='clickNext'>
+      下一页
+    </view>
+    
+  </view>
+</view>

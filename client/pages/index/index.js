@@ -26,6 +26,11 @@ Page({
       url: 'shop/index'
     })
   },
+  readInfo:function(e){
+    wx.navigateTo({
+      url: 'read/index'
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -33,6 +38,10 @@ Page({
     // wx.navigateTo({
     //   url: 'writeShop'
     // })
+    // wx.navigateTo({
+    //   url: 'shop/write'
+    // })
+    // wx.clearStorage();//清空本地存储
   },
 
   /**
@@ -53,9 +62,8 @@ Page({
     var now = new Date(); 
     var monday = util.getMonDay(now);
     var sunday = util.getNextMonDay(now);
-
-    // console.log(monday);
-    // console.log(sunday);
+    //  console.log(monday);
+    //  console.log(sunday);
     // console.log("-----------------------");
     that.setData({ noteInfo: {} });
     that.setData({ shopInfo: {} });  
@@ -72,7 +80,7 @@ Page({
               var value = wx.getStorageSync(key)
               try {
                 var obj = JSON.parse(value);
-                obj["sysTime"] = obj.sysTime.substring(0, 10)+"     ";
+                obj["sysTime"] = obj.sysTime.substring(0, 16)+"     ";
                 if (key.indexOf("write_") >= 0){
                   obj["content"] = obj.content.split("<br>")[0];
                   noteInfo.push(obj);
