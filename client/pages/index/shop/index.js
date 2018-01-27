@@ -18,25 +18,34 @@ Page({
       url: 'write'
     })
   }, deleteAll:function(){
-    console.log("删除全部");
-
     var that = this;
-    wx.getStorageInfo({
+    wx.showModal({
+      title: '警告',
+      content: '你即将删除所有消费记录，请确认？',
       success: function (res) {
-        if (res.keys.length > 0) {
-          for (var i = res.keys.length - 1; i >= 0; i--) {
-            var key = res.keys[i]
-            if (key.indexOf("writeShop_") >= 0) {
-              wx.removeStorageSync(key)
+        if (res.confirm) {
+          // console.log('用户点击确定')
+          wx.getStorageInfo({
+            success: function (res) {
+              if (res.keys.length > 0) {
+                for (var i = res.keys.length - 1; i >= 0; i--) {
+                  var key = res.keys[i]
+                  if (key.indexOf("writeShop_") >= 0) {
+                    wx.removeStorageSync(key)
+                  }
+                }
+              }
+              var shopInfo = new Array();
+              if (shopInfo.length < 1) {
+                var str = '{"uniqueId":"","shopMoney":"0.00","shopTypeUID":"0","shopType":"无","payType":"未知","shopComment":"暂无消费记录","sysTime":""}';
+                shopInfo.push(JSON.parse(str));
+              }
+              that.setData({ shopInfo: shopInfo, totalMoney: "0.00", monthMoney: "0.00" });
             }
-          }
+          })
+        } else if (res.cancel) {
+          // console.log('用户点击取消')
         }
-        var shopInfo = new Array();
-        if (shopInfo.length < 1) {
-          var str = '{"uniqueId":"","shopMoney":"0.00","shopTypeUID":"0","shopType":"无","payType":"未知","shopComment":"暂无消费记录","sysTime":""}';
-          shopInfo.push(JSON.parse(str));
-        }
-        that.setData({ shopInfo: shopInfo, totalMoney: "0.00", monthMoney: "0.00" });
       }
     })
   },
