@@ -74,6 +74,7 @@ Page({
     var prev = this.data.prev;
     var next = this.data.next;
     console.log(that.data.url+curr);
+
     wx.request({
       url: that.data.url+curr,
       header: {

@@ -17,6 +17,28 @@ Page({
     wx.navigateTo({
       url: 'write'
     })
+  }, deleteAll:function(){
+    console.log("删除全部");
+
+    var that = this;
+    wx.getStorageInfo({
+      success: function (res) {
+        if (res.keys.length > 0) {
+          for (var i = res.keys.length - 1; i >= 0; i--) {
+            var key = res.keys[i]
+            if (key.indexOf("writeShop_") >= 0) {
+              wx.removeStorageSync(key)
+            }
+          }
+        }
+        var shopInfo = new Array();
+        if (shopInfo.length < 1) {
+          var str = '{"uniqueId":"","shopMoney":"0.00","shopTypeUID":"0","shopType":"无","payType":"未知","shopComment":"暂无消费记录","sysTime":""}';
+          shopInfo.push(JSON.parse(str));
+        }
+        that.setData({ shopInfo: shopInfo, totalMoney: "0.00", monthMoney: "0.00" });
+      }
+    })
   },
   readDetail:function(e){
     wx.navigateTo({
@@ -86,7 +108,7 @@ Page({
         monthMoney = parseFloat(monthMoney).toFixed(2);
         totalMoney = parseFloat(totalMoney).toFixed(2);
         if (shopInfo.length < 1) {
-          var str = '{"uniqueId":"","shopMoney":"0.00","shopTypeUID":"0","shopType":"无","shopComment":"暂无消费记录","sysTime":""}';
+          var str = '{"uniqueId":"","shopMoney":"0.00","shopTypeUID":"0","shopType":"无","payType":"未知","shopComment":"暂无消费记录","sysTime":""}';
           shopInfo.push(JSON.parse(str));
         }
         that.setData({ shopInfo: shopInfo, totalMoney: totalMoney, monthMoney: monthMoney });

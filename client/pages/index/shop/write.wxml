@@ -6,6 +6,33 @@
             
             <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd">
+                    <view class="weui-label" style='width:75px;'>消费金额：</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input type='digit' name="shopMoney" value='{{shopMoney}}' class="weui-input" placeholder="请输入消费金额"/>
+                </view>
+            </view>
+            
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label" style='width:75px;'>支付方式：</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <radio-group bindchange="radioChange" style="display:flex;flex-direction:row;justify-content:space-between">
+                      <label style='display:flex;flex-direction:row;justify-content:space-between' class="weui-cell weui-check__label" wx:for="{{payTypeInfo}}" wx:key="value">
+                          <radio name="payType" class="weui-check" value="{{item.uniqueId}}" checked="{{item.checked}}"/>
+
+                          <view class="weui-cell__bd">{{item.name}}</view>
+                          <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.checked}}">
+                              <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
+                          </view>
+                      </label>
+                    </radio-group>
+                </view>
+            </view>
+
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
                     <view class="weui-label" style='width:75px;'>消费类型：</view>
                 </view>
                 <view class="weui-cell__bd">
@@ -48,31 +75,7 @@
                     </view>
                 </view> -->
             </view>
-            <view class="weui-cell weui-cell_input">
-                <view class="weui-cell__hd">
-                    <view class="weui-label" style='width:75px;'>支付方式：</view>
-                </view>
-                <view class="weui-cell__bd">
-                    <radio-group bindchange="radioChange" style="display:flex;flex-direction:row;justify-content:space-between">
-                      <label style='display:flex;flex-direction:row;justify-content:space-between' class="weui-cell weui-check__label" wx:for="{{payTypeInfo}}" wx:key="value">
-                          <radio name="payType" class="weui-check" value="{{item.uniqueId}}" checked="{{item.checked}}"/>
 
-                          <view class="weui-cell__bd">{{item.name}}</view>
-                          <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.checked}}">
-                              <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
-                          </view>
-                      </label>
-                    </radio-group>
-                </view>
-            </view>
-            <view class="weui-cell weui-cell_input">
-                <view class="weui-cell__hd">
-                    <view class="weui-label" style='width:75px;'>消费金额：</view>
-                </view>
-                <view class="weui-cell__bd">
-                    <input type='digit' name="shopMoney" value='{{shopMoney}}' class="weui-input" placeholder="请输入消费金额"/>
-                </view>
-            </view>
         </view>
 
         <view class="weui-cells weui-cells_after-title detTextArea">

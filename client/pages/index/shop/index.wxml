@@ -33,10 +33,14 @@
           <view class='my-view-bottom-center'>
             <icon class='wriete-button' type="clear" size="35" color="#19A7EF" bindtap='write'/>
           </view>
+          <view class='my-view-bottom-center'>
+            <icon class='delete-button' type="clear" size="35" color="#ff0000" bindtap='deleteAll'/>
+          </view>
           <view class='my-view-bottom-right'>
             总消费：{{totalMoney}}￥
           </view>
           
         </view>
     </view>
+    
 </view>

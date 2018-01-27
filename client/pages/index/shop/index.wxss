@@ -87,3 +87,6 @@ page {
 .wriete-button{
   transform:rotate(45deg);
 }
+.delete-button{
+  transform:rotate(90deg);
+}
