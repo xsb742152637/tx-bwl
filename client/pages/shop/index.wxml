@@ -1,3 +1,4 @@
+
 <view class="page">
     <view class="page__bd">
         <view class="noteInfo">
@@ -26,7 +27,7 @@
           </block>
         </view>
         
-        <view class='my-view-bottom'>
+        <!-- <view class='my-view-bottom'>
           <view class='my-view-bottom-left'>
             月消费：{{monthMoney}}￥
           </view>
@@ -40,7 +41,6 @@
             总消费：{{totalMoney}}￥
           </view>
           
-        </view>
+        </view> -->
     </view>
-    
 </view>

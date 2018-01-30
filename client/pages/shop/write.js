@@ -1,5 +1,5 @@
 // pages/index/writeShop.js
-var util = require('../../../utils/util.js')
+var util = require('../../utils/util.js')
 
 Page({
 

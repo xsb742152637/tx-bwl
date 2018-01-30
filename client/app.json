@@ -1,11 +1,12 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/index/note/index",
-    "pages/index/note/write",
-    "pages/index/shop/index",
-    "pages/index/shop/write",
-    "pages/index/read/index"
+    "pages/note/index",
+    "pages/note/write",
+    "pages/shop/index",
+    "pages/shop/write",
+    "pages/read/index",
+    "pages/chart/index"
   ],
   "window":{
     "backgroundColor":"#F6F6F6",

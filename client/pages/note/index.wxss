@@ -51,21 +51,33 @@ page {
 }
 .noteInfo .detContent{
   font-size: 17px;
-  color: #000;
+  color: #333;
 }
 
-/*底部浮动栏*/
-.my-view-bottom{
-  position: fixed;
-  bottom: 0rpx;
-  width: 100%;
-  height: 85rpx;
-  background-color: #fff;
+/*按钮共同样式*/
+.top-button{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-content: center;/*垂直居中*/
   text-align: center;
-  padding-top: 15rpx;
-  border-top: 1px solid rgba(0, 0, 0, .1);
 }
-/*新增笔记按钮*/
-.wriete-button{
-  transform:rotate(45deg);
+
+/*按钮共同样式*/
+.wriete-button-add{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;/*垂直居中*/
+  text-align: center;
+  border-radius: 6rpx;
+  color: #fff;
+  border: 1px solid #e5e5e5;
+  background-color:#99CCFF;
+  margin:0rpx 90rpx;
+  padding:8rpx 0rpx;
+}
+/*按钮旁的图标*/
+.write-button-icon{
+  margin-right: 15rpx
 }

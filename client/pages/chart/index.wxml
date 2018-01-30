@@ -1,0 +1,32 @@
+<view class="page">
+  <view class="weui-panel">
+    <view class="weui-panel__hd detHd2">
+      <view class="chart-left">本周消费：</view>
+      <view class="weui-cell__bd chart-right" style='margin-left:26rpx;'>{{weekShop}}￥</view>
+    </view>
+    <view class="weui-panel__hd detHd2">
+      <view class="chart-left">总计消费：</view>
+      <view class="weui-cell__bd chart-right" style='margin-left:26rpx;'>{{allShop}}￥</view>
+    </view>
+
+    <view class="weui-panel__hd detHd2">
+      <view class='chart-left'>支付报表：</view>
+      <view class='chart-right'>
+        <radio-group bindchange="radioChange" style="display:flex;flex-direction:row;justify-content:space-between">
+                    <label style='display:flex;flex-direction:row;justify-content:space-between' class="weui-cell weui-check__label" wx:for="{{array}}" wx:key="value">
+                        <radio name="payType" class="weui-check" value="{{item.uniqueId}}" checked="{{item.checked}}"/>
+
+                        <view class="weui-cell__bd">{{item.name}}</view>
+                        <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.checked}}">
+                            <icon class="weui-icon-radio" type="success_no_circle" color="#99CCFF" size="16"></icon>
+                        </view>
+                    </label>
+                  </radio-group>
+      </view>
+        
+    </view>
+    <view class="weui-panel__bd">
+        <canvas style='height:300px;width:{{winWidth}}px' canvas-id="pieCanvas" disable-scroll="true" class="canvas"></canvas>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,20 @@
+<template name="myTabber">
+  <view class='myTabber-bottom'>
+    <!-- <view class='myTabber-item' data-url="../shop/index" bindtap='checkTabber'>
+      <view class='myTabber-item-icon esg-font icon-qitafei'></view>
+      <view class='myTabber-item-text'>消费</view>
+    </view>  -->
+     <view class='myTabber-item' data-url="../chart/index" bindtap='checkTabber'>
+      <view class='myTabber-item-icon esg-font icon-chengbenfeiyongtongji'></view>
+      <view class='myTabber-item-text'>图表</view>
+    </view> 
+    <view class='myTabber-item' data-url="../note/index" bindtap='checkTabber'>
+      <view class='myTabber-item-icon esg-font icon-renwu1'></view>
+      <view class='myTabber-item-text'>笔记</view>
+    </view>
+    <view class='myTabber-item' data-url="../read/index" bindtap='checkTabber'>
+      <view class='myTabber-item-icon esg-font icon-rizhi1'></view>
+      <view class='myTabber-item-text'>小说</view>
+    </view>
+  </view>
+</template>

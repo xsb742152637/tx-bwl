@@ -1,6 +1,6 @@
 // pages/index/read/index.js
 
-var util = require('../../../utils/util.js')
+var util = require('../../utils/util.js')
 Page({
 
   /**

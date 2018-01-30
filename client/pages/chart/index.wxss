@@ -1,0 +1,72 @@
+/**index.wxss**/
+page {
+    background: #F6F6F6;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.page{
+  background-color:#fff;
+}
+.weui-cell:before{
+  border-top:none;
+}
+.weui-panel{
+  margin: 0px 0px 0px 15px;
+}
+.weui-media-box{
+  padding:1px 15px 10px 10px;
+}
+.weui-panel:before {
+  border: none;
+}
+
+.weui-panel:after {
+  border:none;
+  border-bottom:1rpx solid #e5e5e5;
+}
+
+.weui-panel__hd:after{
+  border: none;
+}
+.page__bd{
+    height: 100%;
+}
+.page__bd{
+    padding-bottom: 0;
+}
+.noteInfo{
+  width: 100%;
+  margin-top: 20rpx;
+  margin-bottom: 55rpx;
+}
+.detHd{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding:10px 15px 8px 0px;
+
+}
+
+.detHd2{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding:10px 15px 8px 0px;
+  border-bottom:1px solid #e5e5e5;
+
+}
+.detHdLeft{
+  display: flex;
+  flex-direction: row;
+}
+.chart-left{
+  font-size: 15px;
+  color: #555;
+}
+.chart-right{
+  font-size: 16px;
+  color: #333;
+}

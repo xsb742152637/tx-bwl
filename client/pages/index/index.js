@@ -1,59 +1,61 @@
 //index.js
-var qcloud = require('../../vendor/wafer2-client-sdk/index')
-var config = require('../../config')
 var util = require('../../utils/util.js')
-var wxCharts = require('../../wxcharts.js');
 var sliderWidth = 96; // 需要设置slider的宽度，用于计算中间位置
-
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    requestResult: '',
-    noteInfo: {},
     shopInfo: {},
-    newNote:[],
-    newShop:[],
-    weekShop:0,
-    winWidth:300,
-    array: [
-      { "uniqueId": "0", "name": "本周", "checked": "true" }, 
-      { "uniqueId": "1", "name": "本月" }, 
-      { "uniqueId": "2", "name": "全部"}],
-    defType:"本周"
-  }, radioChange: function (e) {
-    var array = this.data.array;
-    var defType = 0;
-    for (var i = 0, len = array.length; i < len; ++i) {
-      
-      if (array[i].uniqueId == e.detail.value){
-        array[i].checked = true;
-        defType = array[i].name;
-      }else{
-        array[i].checked = false;
+    monthMoney: 0.00,
+    totalMoney: 0.00,
+    container_height: '800rpx'
+  }, checkTabber: function (e) {
+    var myUrl = e.currentTarget.dataset.url;
+    wx.navigateTo({
+      url: myUrl
+    })
+  },
+  write: function () {
+    wx.navigateTo({
+      url: '../shop/write'
+    })
+  }, deleteAll: function () {
+    var that = this;
+    wx.showModal({
+      title: '警告',
+      content: '你即将删除所有消费记录，请确认？',
+      success: function (res) {
+        if (res.confirm) {
+          // console.log('用户点击确定')
+          wx.getStorageInfo({
+            success: function (res) {
+              if (res.keys.length > 0) {
+                for (var i = res.keys.length - 1; i >= 0; i--) {
+                  var key = res.keys[i]
+                  if (key.indexOf("writeShop_") >= 0) {
+                    wx.removeStorageSync(key)
+                  }
+                }
+              }
+              var shopInfo = new Array();
+              if (shopInfo.length < 1) {
+                var str = '{"uniqueId":"","shopMoney":"0.00","shopTypeUID":"0","shopType":"无","payType":"未知","shopComment":"暂无消费记录","sysTime":""}';
+                shopInfo.push(JSON.parse(str));
+              }
+              that.setData({ shopInfo: shopInfo, totalMoney: "0.00", monthMoney: "0.00" });
+            }
+          })
+        } else if (res.cancel) {
+          // console.log('用户点击取消')
+        }
       }
-      
-    }
-
-    this.setData({
-      array: array, defType: defType
-    });
-    this.onShow()
-  }, noteInfo:function(e){
-    wx.navigateTo({
-      url: 'note/index'
     })
   },
-  shopInfo: function (e) {
+  readDetail: function (e) {
     wx.navigateTo({
-      url: 'shop/index'
-    })
-  },
-  readInfo:function(e){
-    wx.navigateTo({
-      url: 'read/index'
+      url: '../shop/write?uniqueId=' + e.currentTarget.id
     })
   },
   /**
@@ -61,19 +63,15 @@ Page({
    */
   onLoad: function (options) {
     // wx.navigateTo({
-    //   url: 'writeShop'
+    //   url: '../chart/index'
     // })
-    // wx.navigateTo({
-    //   url: 'shop/write'
-    // })
-    // wx.clearStorage();//清空本地存储
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    
+
   },
 
   /**
@@ -83,134 +81,52 @@ Page({
     //wx.clearStorage();//清空本地存储
 
     var that = this;
-
-    var now = new Date(); 
-    var monthNum = now.getMonth();
-    var yearNum = now.getFullYear();
-
-    var monday = util.getMonDay(now);
-    var sunday = util.getNextMonDay(now);
-    //  console.log(monday);
-    //  console.log(sunday);
-    // console.log("-----------------------");
-    that.setData({ noteInfo: {} });
-    that.setData({ shopInfo: {} });  
-
-    var sysRes = wx.getSystemInfoSync()
-    that.setData({winWidth:sysRes.windowWidth})
-    var payTypeInfo = new Array();
-    var otherPay = 0//其它支付
-    var allMoney = 0//总金额
-    var storaRes = wx.getStorageInfoSync()
-    if (storaRes.keys.length > 0) {
-      for (var i = storaRes.keys.length - 1; i >= 0; i--) {
-        var key = storaRes.keys[i]
-        if (key.indexOf("payType_") >= 0) {
-          var value = wx.getStorageSync(key)
-          var obj = JSON.parse(value);
-          payTypeInfo.push(obj);
-        }
-      }
-    }
-  
+    var totalMoney = 0.00;
+    var monthMoney = 0.00;
+    var nowDay = new Date();
+    var month = nowDay.getMonth();
+    var year = nowDay.getFullYear();
+    that.setData({ shopInfo: {} });
     wx.getStorageInfo({
       success: function (res) {
-        var noteInfo = new Array();//笔记列表
-        var shopInfo = new Array();//消费列表
-        var weekShop = 0;//本周消费
+        var shopInfo = new Array();
 
         if (res.keys.length > 0) {
           for (var i = res.keys.length - 1; i >= 0; i--) {
             var key = res.keys[i]
-            if (key.indexOf("write_") >= 0 || key.indexOf("writeShop_") >= 0) {
+            if (key.indexOf("writeShop_") >= 0) {
               var value = wx.getStorageSync(key)
               try {
                 var obj = JSON.parse(value);
-                var st = new Date(obj.sysTime);
-                obj["sysTime"] = obj.sysTime.substring(0, 16)+"     ";
-                if (key.indexOf("write_") >= 0){
-                  obj["content"] = obj.content.split("<br>")[0];
-                  noteInfo.push(obj);
-                } else if (key.indexOf("writeShop_") >= 0){
-                  var money = parseFloat(obj.shopMoney)
-                  var isHave = false;
-                  if ((that.data.defType == "本周" && monday.getTime() <= st.getTime() && sunday.getTime() > st.getTime()) || (that.data.defType == "本月" && monthNum == st.getMonth() && yearNum == st.getFullYear()) || that.data.defType == "全部"){
-                    for (var j = 0; j < payTypeInfo.length; j++) {
-                      if (obj.payTypeUID == payTypeInfo[j].uniqueId) {
-                        var ct = payTypeInfo[j].ct;
-                        if (ct == null) {
-                          ct = 0;
-                        }
-                        payTypeInfo[j]["ct"] = money + ct
-                        isHave = true
-                      }
-                    }
-                    if (!isHave) {
-                      otherPay += money
-                    }
-                    allMoney += money
-                  }
-                  
-                  // console.log(st.getTime());
-                  // console.log(monday.getTime() == st.getTime());
-                  // console.log(sunday.getTime() >= st.getTime());
-                  // console.log("..............................");
-                  if (monday.getTime() <= st.getTime() && sunday.getTime() > st.getTime()){
-                    weekShop += parseFloat(obj.shopMoney);
-                  }
-                  obj["shopMoney"] = parseFloat(obj.shopMoney).toFixed(2);
-                  shopInfo.push(obj);
+                var sysTime = new Date(obj.sysTime);
+                if (month == sysTime.getMonth() && year == sysTime.getFullYear()) {
+                  monthMoney += parseFloat(obj.shopMoney);
                 }
-                
+                obj["sysTime"] = obj.sysTime.substring(0, 16) + "  " + (obj.weekDay ? obj.weekDay : "");
+                obj["shopComment"] = obj.shopComment.split("<br>")[0];
+                obj["shopMoney"] = parseFloat(obj.shopMoney).toFixed(2);
+                obj["shopType"] = (new String(obj.shopType)).split(",");
+                console.log(obj["payType"]);
+                if (obj["payType"] == "" || obj["payType"] == null) {
+                  obj["payType"] = "未知"
+                }
+                // console.log(stu);
+                totalMoney += parseFloat(obj.shopMoney);
+                shopInfo.push(obj);
               } catch (e) {
+                //wx.removeStorageSync(key)
                 console.log(e);
-                // wx.removeStorageSync(key)
               }
-              
-            } 
-          }
-          if (allMoney > 0) {
-            try{
-              var cInfo = new Array()
-              var bl = 100 / allMoney
-              for (var m = 0; m < payTypeInfo.length; m++) {
-                var ct = payTypeInfo[m].ct;
-                if (ct != null && ct > 0) {
-                  var d = parseFloat(ct) * bl
-                  d = parseFloat(d).toFixed(2);
-                  var chartsInfo2 = "{ \"name\":\"" + payTypeInfo[m].name + "：" + parseFloat(ct).toFixed(2)+"￥\" , \"data\":  "+ d+" }"
-                  cInfo.push(JSON.parse(chartsInfo2))
-                }
-              }
-              if (otherPay > 0) {
-                
-                cInfo.push(JSON.parse("{ \"name\":\"其它：" + parseFloat(otherPay).toFixed(2)+"￥\" , \"data\": " + parseFloat(parseFloat(otherPay) * bl).toFixed(2) + " }"))
-              }
-
-              new wxCharts({
-                canvasId: 'pieCanvas',
-                type: 'pie',
-                series: cInfo,
-                width: sysRes.windowWidth,
-                height: 300,
-                dataLabel: true
-              });
-            }catch(e){
-              console.log(e)
             }
-            
           }
         }
-        weekShop = parseFloat(weekShop).toFixed(2);
-        if (noteInfo.length < 1) {
-          var str = '{"uniqueId":"","title":"暂无笔记","content":"暂无笔记","sysTime":"","weekDay":""}';
-          noteInfo.push(JSON.parse(str));
-        } if (shopInfo.length < 1) {
-          var str = '{"uniqueId":"","shopMoney":"0.00","shopTypeUID":"0","shopType":"无","shopComment":"暂无消费","sysTime":"","weekDay":""}';
+        monthMoney = parseFloat(monthMoney).toFixed(2);
+        totalMoney = parseFloat(totalMoney).toFixed(2);
+        if (shopInfo.length < 1) {
+          var str = '{"uniqueId":"","shopMoney":"0.00","shopTypeUID":"0","shopType":"无","payType":"未知","shopComment":"暂无消费记录","sysTime":""}';
           shopInfo.push(JSON.parse(str));
         }
-        that.setData({ noteInfo: noteInfo, shopInfo: shopInfo, newNote: noteInfo[0], newShop: shopInfo[0], weekShop: weekShop });
-        
+        that.setData({ shopInfo: shopInfo, totalMoney: totalMoney, monthMoney: monthMoney });
       }
     })
   },
@@ -219,14 +135,14 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-    
+
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    
+
   },
 
   /**
@@ -242,13 +158,13 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    
+
   },
 
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    
+
   }
 })

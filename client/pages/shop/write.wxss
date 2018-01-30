@@ -1,67 +1,66 @@
-/**index.wxss**/
+/* pages/index/writeShop.wxss */
 page {
     background: #F6F6F6;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 }
-.page__bd{
-    height: 100%;
+form{
+  width: 95%;
 }
-.page__bd{
-    padding-bottom: 0;
+.detTop{
+  margin-top:50rpx; 
 }
-.weui-panel__hd{
-  padding:6px 15px 6px;
+.view-button{
+  position:absolute;
+  bottom:20rpx;
+  width:100%;
 }
-/*列表样式*/
-.noteInfo{
-  width: 100%;
-  margin-top: 20rpx;
-  margin-bottom: 180rpx;
+.view-button>button{
+  width:40%;
 }
-.detHd{
+
+.shopType{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  height: 44px;
+  line-height:40px;
 }
-.detHdLeft{
+.shopType_ch{
+  transform:rotate(90deg);
+}
+
+.addShopType,addShopTypeInput{
   display: flex;
   flex-direction: row;
 }
-.detTitle{
-  font-size: 15px;
+.addShopTypeInputShow{
+  display: block;
+}
+.addShopTypeInputHide{
+  display: none;
+}
+.shopTypeButton{
+  padding: 2px 8px;
+  font-size:17px;
+  text-align:center;
+  border-radius:5px;
+  background: #1AAD19;
+  color:#FFFFFF;
+}
+.detTextArea{
+  margin-top: 30rpx;
+}
+.write-left{
+  color: #333;
+  font-weight: bold;
+}
+.write-right{
   color: #555;
 }
-/*消费类型*/
-.noteInfo .detType{
-  border: 1px solid #e5e5e5;
-  padding: 5rpx 20rpx;
-  border-radius: 6rpx;
-  background-color: #99CCFF;
-  color: #fff;
-  margin:0px 3px;
-}
-/*支付方式*/
-.noteInfo .detPay{
-  border: 1px solid #e5e5e5;
-  padding: 5rpx 20rpx;
-  border-radius: 6rpx;
-  background-color: #CCCCFF;
-  color: #fff;
-}
-/*消费金额*/
-.noteInfo .detMoney{
-  padding: 0rpx 20rpx;
-  color: #333;
-  font-size:15px;
-}
-/*列表内容*/
-.noteInfo .detContent{
-  font-size: 17px;
-  color: #000;
-}
+
+
+
 
 /*按钮共同样式*/
 .top-button{
@@ -70,6 +69,13 @@ page {
   justify-content: space-around;
   align-content: center;/*垂直居中*/
   text-align: center;
+  position:fixed;
+  z-index: 500;
+  bottom: 0;
+  width: 100%;
+  padding:20rpx 0rpx;
+  border-top:1px solid #e5e5e5;
+  background-color: #fff;
 }
 
 /*按钮共同样式*/
@@ -99,4 +105,11 @@ page {
 /*按钮旁的图标*/
 .write-button-icon{
   margin-right: 15rpx
+}
+button{
+  line-height: 1.9
+}
+.check-icon{
+  font-size:20px;
+  color:#99CCFF;
 }
