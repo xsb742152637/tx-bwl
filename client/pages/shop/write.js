@@ -198,7 +198,7 @@ Page({
               var value = wx.getStorageSync(key)
               try {
                 var obj = JSON.parse(value);
-                // shopTypeInfo.push(obj);
+                shopTypeInfo.push(obj);
               } catch (e) {
                 wx.removeStorageSync(key)
               }
@@ -206,7 +206,7 @@ Page({
               var value = wx.getStorageSync(key)
               try {
                 var obj = JSON.parse(value);
-                // payTypeInfo.push(obj);
+                payTypeInfo.push(obj);
               } catch (e) {
                 wx.removeStorageSync(key)
               }
