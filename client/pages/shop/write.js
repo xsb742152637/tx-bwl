@@ -69,7 +69,7 @@ Page({
         showCancel: false,
         success: function (res) {
           if (res.confirm) {
-            console.log('用户点击确定')
+            // console.log('用户点击确定')
           }
         }
       });
@@ -98,7 +98,6 @@ Page({
       }else{
         shopComment = shopComment.replace(/\n/g, '<br>');
       }
-      console.log(shopTypeUID)
       var str = '{"uniqueId":"' + key + '","shopMoney":"' + shopMoney + '","shopTypeUID":"' + shopTypeUID.join(",") + '","shopType":"' + shopType.join(",") + '","payTypeUID":"' + payTypeUID.toString() + '","payType":"' + payType.toString() + '","shopComment":"' + shopComment + '","sysTime":"' + util.formatTime(d) + '","weekDay":"' + util.getWeekDay(d) +'"}';
 
       //更新消费类型的选择次数
@@ -130,7 +129,7 @@ Page({
           }
         });
       }
-      console.log(str);
+
       // 同步方式存储表单数据
       wx.setStorage({
         key: key,
@@ -165,8 +164,6 @@ Page({
       payTypeInfo: payTypeInfo
     });
   }, checkboxChange: function (e) {
-    console.log(e.detail);
-
     var shopTypeInfo = this.data.shopTypeInfo, values = e.detail.value;
     for (var i = 0, lenI = shopTypeInfo.length; i < lenI; ++i) {
       shopTypeInfo[i].checked = false;

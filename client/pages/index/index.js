@@ -8,8 +8,6 @@ Page({
    */
   data: {
     shopInfo: {},
-    monthMoney: 0.00,
-    totalMoney: 0.00,
     container_height: '800rpx'
   }, checkTabber: function (e) {
     var myUrl = e.currentTarget.dataset.url;
@@ -22,6 +20,9 @@ Page({
       url: '../shop/write'
     })
   }, deleteAll: function () {
+    var date = new Date();
+    var month = date.getMonth();
+    var year = date.getFullYear();
     var that = this;
     wx.showModal({
       title: '警告',
@@ -35,16 +36,16 @@ Page({
                 for (var i = res.keys.length - 1; i >= 0; i--) {
                   var key = res.keys[i]
                   if (key.indexOf("writeShop_") >= 0) {
-                    wx.removeStorageSync(key)
+                    var obj = JSON.parse(wx.getStorageSync(key));
+                    var sysTime = new Date(obj.sysTime);
+                    if(sysTime.getFullYear() < year || (sysTime.getFullYear() == year && sysTime.getMonth() < month)){
+
+                      wx.removeStorageSync(key)
+                    }
                   }
                 }
               }
-              var shopInfo = new Array();
-              if (shopInfo.length < 1) {
-                var str = '{"uniqueId":"","shopMoney":"0.00","shopTypeUID":"0","shopType":"无","payType":"未知","shopComment":"暂无消费记录","sysTime":""}';
-                shopInfo.push(JSON.parse(str));
-              }
-              that.setData({ shopInfo: shopInfo, totalMoney: "0.00", monthMoney: "0.00" });
+              that.onShow();
             }
           })
         } else if (res.cancel) {
@@ -81,11 +82,7 @@ Page({
     //wx.clearStorage();//清空本地存储
 
     var that = this;
-    var totalMoney = 0.00;
-    var monthMoney = 0.00;
-    var nowDay = new Date();
-    var month = nowDay.getMonth();
-    var year = nowDay.getFullYear();
+    
     that.setData({ shopInfo: {} });
     wx.getStorageInfo({
       success: function (res) {
@@ -99,19 +96,14 @@ Page({
               try {
                 var obj = JSON.parse(value);
                 var sysTime = new Date(obj.sysTime);
-                if (month == sysTime.getMonth() && year == sysTime.getFullYear()) {
-                  monthMoney += parseFloat(obj.shopMoney);
-                }
+                
                 obj["sysTime"] = obj.sysTime.substring(0, 16) + "  " + (obj.weekDay ? obj.weekDay : "");
                 obj["shopComment"] = obj.shopComment.split("<br>")[0];
                 obj["shopMoney"] = parseFloat(obj.shopMoney).toFixed(2);
                 obj["shopType"] = (new String(obj.shopType)).split(",");
-                console.log(obj["payType"]);
                 if (obj["payType"] == "" || obj["payType"] == null) {
                   obj["payType"] = "未知"
                 }
-                // console.log(stu);
-                totalMoney += parseFloat(obj.shopMoney);
                 shopInfo.push(obj);
               } catch (e) {
                 //wx.removeStorageSync(key)
@@ -120,13 +112,11 @@ Page({
             }
           }
         }
-        monthMoney = parseFloat(monthMoney).toFixed(2);
-        totalMoney = parseFloat(totalMoney).toFixed(2);
         if (shopInfo.length < 1) {
           var str = '{"uniqueId":"","shopMoney":"0.00","shopTypeUID":"0","shopType":"无","payType":"未知","shopComment":"暂无消费记录","sysTime":""}';
           shopInfo.push(JSON.parse(str));
         }
-        that.setData({ shopInfo: shopInfo, totalMoney: totalMoney, monthMoney: monthMoney });
+        that.setData({ shopInfo: shopInfo});
       }
     })
   },
