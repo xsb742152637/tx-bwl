@@ -5,7 +5,6 @@
     "pages/note/write",
     "pages/shop/index",
     "pages/shop/write",
-    "pages/read/index",
     "pages/chart/index"
   ],
   "window":{

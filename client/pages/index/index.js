@@ -38,10 +38,10 @@ Page({
                   if (key.indexOf("writeShop_") >= 0) {
                     var obj = JSON.parse(wx.getStorageSync(key));
                     var sysTime = new Date(obj.sysTime);
-                    if(sysTime.getFullYear() < year || (sysTime.getFullYear() == year && sysTime.getMonth() < month)){
+                    // if(sysTime.getFullYear() < year || (sysTime.getFullYear() == year && sysTime.getMonth() < month)){
 
                       wx.removeStorageSync(key)
-                    }
+                    // }
                   }
                 }
               }

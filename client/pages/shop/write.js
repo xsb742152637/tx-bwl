@@ -198,7 +198,7 @@ Page({
               var value = wx.getStorageSync(key)
               try {
                 var obj = JSON.parse(value);
-                shopTypeInfo.push(obj);
+                // shopTypeInfo.push(obj);
               } catch (e) {
                 wx.removeStorageSync(key)
               }
@@ -206,7 +206,7 @@ Page({
               var value = wx.getStorageSync(key)
               try {
                 var obj = JSON.parse(value);
-                payTypeInfo.push(obj);
+                // payTypeInfo.push(obj);
               } catch (e) {
                 wx.removeStorageSync(key)
               }
@@ -222,7 +222,7 @@ Page({
           });
           shopTypeInfo.push(JSON.parse(str1));
 
-          var str2 = '{"uniqueId":"shopType_1","name":"网购","count":1}';
+          var str2 = '{"uniqueId":"shopType_1","name":"超市","count":1}';
           wx.setStorage({
             key: "shopType_1",
             data: str2
@@ -236,7 +236,7 @@ Page({
           });
           shopTypeInfo.push(JSON.parse(str3));
         } if (payTypeInfo.length < 1) {
-          var str1 = '{"uniqueId":"payType_0","name":"微信","count":2}';
+          var str1 = '{"uniqueId":"payType_0","name":"扫码","count":2}';
           // 同步方式存储表单数据
           wx.setStorage({
             key: "payType_0",
@@ -244,7 +244,7 @@ Page({
           });
           payTypeInfo.push(JSON.parse(str1));
 
-          var str2 = '{"uniqueId":"payType_1","name":"信用卡","count":1}';
+          var str2 = '{"uniqueId":"payType_1","name":"刷卡","count":1}';
           wx.setStorage({
             key: "payType_1",
             data: str2
@@ -257,6 +257,7 @@ Page({
             data: str3
           });
           payTypeInfo.push(JSON.parse(str3));
+
         }
         shopTypeInfo.sort(function (a, b) { return a.count < b.count ? 1 : -1 });//从大到小排序
         payTypeInfo.sort(function (a, b) { return a.count < b.count ? 1 : -1 });//从大到小排序

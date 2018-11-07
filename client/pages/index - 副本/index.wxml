@@ -1,7 +1,0 @@
-<view class="page">
-    <view class='myTabber-panel'>
-       
-    </view>
-    <import src ="../../utils/temp/index"/> 
-    <template is="myTabber"/> 
-</view>
