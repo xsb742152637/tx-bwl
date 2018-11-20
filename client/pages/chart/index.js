@@ -15,6 +15,69 @@ Page({
       { "uniqueId": "0", "name": "本周", "checked": "true" },
       { "uniqueId": "1", "name": "全部" }],
     defType: "本周"
+  }, deleteBefor: function () {
+    var date = new Date();
+    var monday = util.getMonDay(date);
+    var that = this;
+    wx.showModal({
+      title: '警告',
+      content: '你即将删除所有消费记录，请确认？',
+      success: function (res) {
+        if (res.confirm) {
+          // console.log('用户点击确定')
+          wx.getStorageInfo({
+            success: function (res) {
+              if (res.keys.length > 0) {
+                for (var i = res.keys.length - 1; i >= 0; i--) {
+                  var key = res.keys[i]
+                  if (key.indexOf("writeShop_") >= 0) {
+                    var obj = JSON.parse(wx.getStorageSync(key));
+                    var sysTime = new Date(obj.sysTime);
+                    if (monday.getTime() > sysTime.getTime()){
+                      wx.removeStorageSync(key)
+                    }
+                  }
+                }
+              }
+              that.onShow();
+            }
+          })
+        } else if (res.cancel) {
+          // console.log('用户点击取消')
+        }
+      }
+    })
+  }, deleteAll: function () {
+    var date = new Date();
+    var month = date.getMonth();
+    var year = date.getFullYear();
+    var that = this;
+    wx.showModal({
+      title: '警告',
+      content: '你即将删除所有消费记录，请确认？',
+      success: function (res) {
+        if (res.confirm) {
+          // console.log('用户点击确定')
+          wx.getStorageInfo({
+            success: function (res) {
+              if (res.keys.length > 0) {
+                for (var i = res.keys.length - 1; i >= 0; i--) {
+                  var key = res.keys[i]
+                  if (key.indexOf("writeShop_") >= 0) {
+                    var obj = JSON.parse(wx.getStorageSync(key));
+                    var sysTime = new Date(obj.sysTime);
+                    wx.removeStorageSync(key)
+                  }
+                }
+              }
+              that.onShow();
+            }
+          })
+        } else if (res.cancel) {
+          // console.log('用户点击取消')
+        }
+      }
+    })
   }, radioChange: function (e) {
     var array = this.data.array;
     var defType = 0;
@@ -62,22 +125,11 @@ Page({
   
     var sysRes = wx.getSystemInfoSync()
     that.setData({ winWidth: sysRes.windowWidth })
-    var payTypeInfo = new Array();
+    var shopTypeInfo = new Array();
     var otherPay = 0//其它支付
     var allShop = 0//总金额
     var weekShop = 0;//本周消费
-    var storaRes = wx.getStorageInfoSync()
-    if (storaRes.keys.length > 0) {
-      for (var i = storaRes.keys.length - 1; i >= 0; i--) {
-        var key = storaRes.keys[i]
-        if (key.indexOf("payType_") >= 0) {
-          var value = wx.getStorageSync(key)
-          var obj = JSON.parse(value);
-          payTypeInfo.push(obj);
-        }
-      }
-    }
-
+    
     wx.getStorageInfo({
       success: function (res) {
         if (res.keys.length > 0) {
@@ -91,20 +143,42 @@ Page({
                 var money = parseFloat(obj.shopMoney)
                 var isHave = false;
                 if ((that.data.defType == "本周" && monday.getTime() <= st.getTime() && sunday.getTime() > st.getTime()) || that.data.defType == "全部") {
-                  for (var j = 0; j < payTypeInfo.length; j++) {
-                    if (obj.payTypeUID == payTypeInfo[j].uniqueId) {
-                      var ct = payTypeInfo[j].ct;
+                  if (obj.shopTypeUID != "" && obj.shopTypeUID != null){
+                    var stu = (new String(obj.shopTypeUID)).split(",");
+                    var sty = (new String(obj.shopType)).split(",");
+                    var nmoney = money;
+                    if(stu.length > 1){
+                      nmoney = nmoney / stu.length;
+                    }
+                    for (var m = 0; m < stu.length; m++) {
+                      var isHave = false;
+                      for (var j = 0; j < shopTypeInfo.length; j++) {
+                        if (stu[m] == shopTypeInfo[j].uniqueId) {
+                          var ct = shopTypeInfo[j].ct;
+                          if (ct == null) {
+                            ct = 0;
+                          }
+                          shopTypeInfo[j]["ct"] = parseFloat(ct) + nmoney
+                          isHave = true
+                        }
+                      }
+                      if (!isHave) {
+                        shopTypeInfo.push(JSON.parse('{"uniqueId":"' + stu[m] + '","name":"' + sty[m] + '","ct":"' + nmoney + '","count":0}'));
+                      }
+                    }
+                  }else{
+                    var key = "shopType_" + obj.addShopTypeName;
+                    shopTypeInfo.push(JSON.parse('{"uniqueId":"' + key + '","name":"' + obj.addShopTypeName + '","count":0}'));
+                    var len = shopTypeInfo.length - 1;
+                    if (key == shopTypeInfo[len].uniqueId) {
+                      var ct = shopTypeInfo[len].ct;
                       if (ct == null) {
                         ct = 0;
                       }
-                      payTypeInfo[j]["ct"] = money + ct
-                      isHave = true
+                      shopTypeInfo[len]["ct"] = parseFloat(ct) + money
                     }
                   }
-                  if (!isHave) {
-                    otherPay += money
-                  }
-                  allShop += money
+                  allShop += money;
                 }
 
                 if (monday.getTime() <= st.getTime() && sunday.getTime() > st.getTime()) {
@@ -121,12 +195,12 @@ Page({
             try {
               var cInfo = new Array()
               var bl = 100 / allShop
-              for (var m = 0; m < payTypeInfo.length; m++) {
-                var ct = payTypeInfo[m].ct;
+              for (var m = 0; m < shopTypeInfo.length; m++) {
+                var ct = shopTypeInfo[m].ct;
                 if (ct != null && ct > 0) {
                   var d = parseFloat(ct) * bl
                   d = parseFloat(d).toFixed(2);
-                  var chartsInfo2 = "{ \"name\":\"" + payTypeInfo[m].name + "：" + parseFloat(ct).toFixed(2) + "￥\" , \"data\":  " + d + " }"
+                  var chartsInfo2 = "{ \"name\":\"" + shopTypeInfo[m].name + "：" + parseFloat(ct).toFixed(2) + "￥\" , \"data\":  " + d + " }"
                   cInfo.push(JSON.parse(chartsInfo2))
                 }
               }

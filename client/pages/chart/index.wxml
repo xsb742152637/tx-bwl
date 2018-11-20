@@ -1,5 +1,20 @@
 <view class="page">
   <view class="weui-panel">
+    <view class='top-button'>
+      <view class='wriete-button' style='flex-grow:1;' >
+        <view class='wriete-button-remove' bindtap='deleteBefor'>
+          <view class='write-button-icon esg-font icon-shangchu'></view>
+          <view class='write-button-text'>清空本周前</view>
+        </view>
+      </view>
+      <view class='wriete-button' style='flex-grow:1;' >
+        <view class='wriete-button-removeAll' bindtap='deleteAll'>
+          <view class='write-button-icon esg-font icon-shangchu'></view>
+          <view class='write-button-text'>清空全部</view>
+        </view>
+      </view>
+    </view>
+    
     <view class="weui-panel__hd detHd2">
       <view class="chart-left">本周消费：</view>
       <view class="weui-cell__bd chart-right" style='margin-left:26rpx;'>{{weekShop}}￥</view>

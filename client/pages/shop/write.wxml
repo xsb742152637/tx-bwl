@@ -12,36 +12,12 @@
                     <input type='digit' name="shopMoney" value='{{shopMoney}}' class="weui-input" placeholder="请输入消费金额"/>
                 </view>
             </view>
-            
-            <view class="weui-cell weui-cell_input">
-                <view class="weui-cell__hd write-left">
-                    <view class="weui-label" style='width:75px;'>支付方式：</view>
-                </view>
-                <view class="weui-cell__bd write-right">
-                    <radio-group bindchange="radioChange" style="display:flex;flex-direction:row;justify-content:space-between">
-                      <label style='display:flex;flex-direction:row;justify-content:space-between' class="weui-cell weui-check__label" wx:for="{{payTypeInfo}}" wx:key="value">
-                          <radio name="payType" class="weui-check" value="{{item.uniqueId}}" checked="{{item.checked}}"/>
-
-                          <view class="weui-cell__bd">{{item.name}}</view>
-                          <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.checked}}">
-                              <icon class="weui-icon-radio" type="success_no_circle" color="#99CCFF" size="16"></icon>
-                          </view>
-                      </label>
-                    </radio-group>
-                </view>
-            </view>
 
             <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd write-left">
                     <view class="weui-label" style='width:75px;'>消费类型：</view>
                 </view>
                 <view class="weui-cell__bd write-right">
-                    <!-- <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
-                      <view class="shopType">
-                          <input name="shopType" class="weui-input shopType_text" value="{{shopType}}"  placeholder="请选择消费类型" disabled='disabled' style="width:100%;"/>
-                          <view class='shopType_ch'>→</view>
-                      </view>
-                    </picker> -->
                     <checkbox-group bindchange="checkboxChange" >
                       <label style="display:flex;flex-direction:row;float:left;padding:10px 5px;" wx:for="{{shopTypeInfo}}" wx:key="value">
                           <checkbox name="shopType" class="weui-check" value="{{item.uniqueId}}" checked="{{item.checked}}"/>
@@ -53,27 +29,18 @@
                           <view class="weui-cell__bd">{{item.name}}</view>
                       </label>
                     </checkbox-group>
-                    <view style='clear:left;' class="weui-cell weui-cell_link">
-                        <view class="weui-cell__bd" bindtap='addShopType'>添加更多……</view>
-                    </view>
                 </view>
             </view>
 
-            <view class="weui-cells weui-cells_after-title {{addShopTypeShow?'addShopTypeInputShow':'addShopTypeInputHide'}}" >
+            <view class="weui-cells weui-cells_after-title " >
                 <view class="weui-cell weui-cell_input" style='position:relative'>
                     <view class="weui-cell__hd write-left">
-                        <view class="weui-label" style='width:75px;'>类型名称：</view>
+                        <view class="weui-label" style='width:75px;'>其它类型：</view>
                     </view>
                     <view class="weui-cell__bd write-right" style='margin-left:26rpx;'>
-                        <input name="addShopTypeName" class="weui-input" placeholder="请输入类型名称"/>
+                        <input name="addShopTypeName" value="{{addShopTypeName}}" class="weui-input" placeholder="上面没有满足的类型？输入一个(选填)"/>
                     </view>
-                    <!-- <view class='shopTypeButton' bindtap='addType' style='position:absolute;right:5px;'>添加</view> -->
                 </view>
-                <!-- <view class="weui-cell weui-cell_input">
-                    <view class="weui-cell__bd ">
-                        
-                    </view>
-                </view> -->
             </view>
 
         </view>
@@ -81,15 +48,12 @@
         <view class="weui-cells weui-cells_after-title detTextArea">
             <view class="weui-cell">
                 <view class="weui-cell__bd write-right">
-                    <textarea value='{{shopComment}}' name="shopComment" class="weui-textarea" placeholder="消费说明：" style="height: 8em" />
+                    <textarea value='{{shopComment}}' name="shopComment" class="weui-textarea" placeholder="消费说明(选填)：" style="height: 3em" />
                   
                 </view>
             </view>
         </view>
-        <!-- <view class="view-button">
-            <button type="primary" form-type="submit" style="float:left;margin-left:25rpx;">保存</button>
-            <button id="{{uniqueId}}" bindtap='deleteDetail' style="float:rightmargin-right:50rpx;background-color:#efefef;">删除</button>
-        </view> -->
+        
       <view class='top-button'>
         <view class='wriete-button' style='flex-grow:3;' >
           <button class='wriete-button-add' form-type="submit" >

@@ -8,13 +8,6 @@
             <view class='write-button-text'>新增</view>
           </view>
         </view>
-        <view class='wriete-button' style='flex-grow:1;' >
-          <view class='wriete-button-remove' bindtap='deleteAll'>
-            <view class='write-button-icon esg-font icon-shangchu'></view>
-            <view class='write-button-text'>清空</view>
-          </view>
-          
-        </view>
       </view>
         
         <view class="noteInfo">
@@ -24,14 +17,14 @@
                     <view class='detHdLeft'>
                         <view class='detType'wx:for="{{item.shopType}}" wx:key="uniqueId">{{item}}</view>
                     </view>
-                    <view class='detPay'>{{item.payType}}</view> 
+                    <view class='detSysTime'>{{item.sysTime}}</view>
                 </view>
                 <view class="weui-panel__hd detHd">
                     <view class='detMoney'>
                         {{item.shopMoney}}￥
                     </view>
                     
-                    <view class='detSysTime'>{{item.sysTime}}</view>
+                    <view class='detSysTime'>{{item.shopComment}}</view>
                 </view>
                 <!-- <view class="weui-panel__bd">
                     <view class="weui-media-box weui-media-box_text">

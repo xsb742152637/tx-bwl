@@ -9,7 +9,7 @@
                     <view class="weui-label" style='width:55px;'>标题：</view>
                 </view> -->
                 <view class="weui-cell__bd">
-                    <input name="title" value='{{title}}' class="weui-input" placeholder='标题：'/>
+                    <input name="title" value='{{title}}' class="weui-input" placeholder='标题(选填)：'/>
                 </view>
             </view>
         </view>
@@ -17,7 +17,7 @@
         <view class="weui-cells weui-cells_after-title detTextArea">
             <view class="weui-cell">
                 <view class="weui-cell__bd">
-                    <textarea value='{{content}}' name="content" class="weui-textarea" placeholder="正文：" style="height: 15em" />
+                    <textarea value='{{content}}' name="content" maxlength="2000" class="weui-textarea" placeholder="正文：" style="height: 18em" />
                   
                 </view>
             </view>

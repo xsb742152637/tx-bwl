@@ -19,40 +19,6 @@ Page({
     wx.navigateTo({
       url: '../shop/write'
     })
-  }, deleteAll: function () {
-    var date = new Date();
-    var month = date.getMonth();
-    var year = date.getFullYear();
-    var that = this;
-    wx.showModal({
-      title: '警告',
-      content: '你即将删除所有消费记录，请确认？',
-      success: function (res) {
-        if (res.confirm) {
-          // console.log('用户点击确定')
-          wx.getStorageInfo({
-            success: function (res) {
-              if (res.keys.length > 0) {
-                for (var i = res.keys.length - 1; i >= 0; i--) {
-                  var key = res.keys[i]
-                  if (key.indexOf("writeShop_") >= 0) {
-                    var obj = JSON.parse(wx.getStorageSync(key));
-                    var sysTime = new Date(obj.sysTime);
-                    // if(sysTime.getFullYear() < year || (sysTime.getFullYear() == year && sysTime.getMonth() < month)){
-
-                      wx.removeStorageSync(key)
-                    // }
-                  }
-                }
-              }
-              that.onShow();
-            }
-          })
-        } else if (res.cancel) {
-          // console.log('用户点击取消')
-        }
-      }
-    })
   },
   readDetail: function (e) {
     wx.navigateTo({
@@ -98,11 +64,18 @@ Page({
                 var sysTime = new Date(obj.sysTime);
                 
                 obj["sysTime"] = obj.sysTime.substring(0, 16) + "  " + (obj.weekDay ? obj.weekDay : "");
-                obj["shopComment"] = obj.shopComment.split("<br>")[0];
+                if (obj.shopComment != "" && obj.shopComment != null){
+                  obj["shopComment"] = obj.shopComment.split("<br>")[0].substring(0, 22);
+                }
                 obj["shopMoney"] = parseFloat(obj.shopMoney).toFixed(2);
-                obj["shopType"] = (new String(obj.shopType)).split(",");
-                if (obj["payType"] == "" || obj["payType"] == null) {
-                  obj["payType"] = "未知"
+                console.log(obj.shopType);
+                if (obj.shopType != "" && obj.shopType != null){
+                  obj["shopType"] = (new String(obj.shopType)).split(",");
+                }else{
+                  obj["shopType"] = new Array();
+                }
+                if (obj["addShopTypeName"] != "" && obj["addShopTypeName"] != null) {
+                  obj["shopType"].push(obj["addShopTypeName"]);
                 }
                 shopInfo.push(obj);
               } catch (e) {
