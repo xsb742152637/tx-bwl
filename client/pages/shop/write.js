@@ -118,18 +118,20 @@ Page({
     wx.getStorageInfo({
       success: function (res) {
         var shopTypeInfo = new Array();
+
+        shopTypeInfo.push(JSON.parse('{"uniqueId":"shopType_maicai","name":"买菜","count":0}'));
+        shopTypeInfo.push(JSON.parse('{"uniqueId":"shopType_waimai","name":"外卖","count":0}'));
+        shopTypeInfo.push(JSON.parse('{"uniqueId":"shopType_chaoshi","name":"超市","count":0}'));
+        
         shopTypeInfo.push(JSON.parse('{"uniqueId":"shopType_zaocan","name":"早餐","count":0}'));
         shopTypeInfo.push(JSON.parse('{"uniqueId":"shopType_wucan","name":"午餐","count":0}'));
         shopTypeInfo.push(JSON.parse('{"uniqueId":"shopType_wancan","name":"晚餐","count":0}'));
-
-        shopTypeInfo.push(JSON.parse('{"uniqueId":"shopType_maicai","name":"买菜","count":0}'));
-        shopTypeInfo.push(JSON.parse('{"uniqueId":"shopType_shuiguo","name":"水果","count":0}'));
-        shopTypeInfo.push(JSON.parse('{"uniqueId":"shopType_chaoshi","name":"超市","count":0}'));
 
         shopTypeInfo.push(JSON.parse('{"uniqueId":"shopType_dache","name":"打车","count":0}'));
         shopTypeInfo.push(JSON.parse('{"uniqueId":"shopType_wanggou","name":"网购","count":0}'));
         shopTypeInfo.push(JSON.parse('{"uniqueId":"shopType_diangou","name":"店购","count":0}'));
 
+        shopTypeInfo.push(JSON.parse('{"uniqueId":"shopType_shuiguo","name":"水果","count":0}'));
         shopTypeInfo.push(JSON.parse('{"uniqueId":"shopType_shenghuojiaofei","name":"生活缴费","count":0}'));
       
         if (uniqueId != undefined && uniqueId != "") {
