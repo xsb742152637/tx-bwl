@@ -6,7 +6,7 @@
             
             <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd write-left">
-                    <view class="weui-label" style='width:75px;'>消费金额：</view>
+                    <view class="weui-label" style='width:85px;'>消费金额：</view>
                 </view>
                 <view class="weui-cell__bd write-right" style='margin-left:26rpx;'>
                     <input type='digit' name="shopMoney" value='{{shopMoney}}' class="weui-input" placeholder="请输入消费金额"/>
@@ -15,7 +15,7 @@
 
             <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd write-left">
-                    <view class="weui-label" style='width:75px;'>消费类型：</view>
+                    <view class="weui-label" style='width:85px;'>消费类型：</view>
                 </view>
                 <view class="weui-cell__bd write-right">
                     <checkbox-group bindchange="checkboxChange" >
@@ -35,10 +35,10 @@
             <view class="weui-cells weui-cells_after-title " >
                 <view class="weui-cell weui-cell_input" style='position:relative'>
                     <view class="weui-cell__hd write-left">
-                        <view class="weui-label" style='width:75px;'>其它类型：</view>
+                        <view class="weui-label" style='width:85px;'>其它类型：</view>
                     </view>
                     <view class="weui-cell__bd write-right" style='margin-left:26rpx;'>
-                        <input name="addShopTypeName" value="{{addShopTypeName}}" class="weui-input" placeholder="上面没有满足的类型？输入一个(选填)"/>
+                        <input name="addShopTypeName" value="{{addShopTypeName}}" class="weui-input" placeholder="上面没有满足的类型？"/>
                     </view>
                 </view>
             </view>
