@@ -30,7 +30,7 @@ Page({
    */
   onLoad: function (options) {
     // wx.navigateTo({
-    //   url: '../chart/index'
+    //   url: '../secret/index'
     // })
   },
 

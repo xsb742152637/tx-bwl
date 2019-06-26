@@ -12,9 +12,9 @@
       <view class='myTabber-item-icon esg-font icon-renwu1'></view>
       <view class='myTabber-item-text'>笔记</view>
     </view>
-    <!-- <view class='myTabber-item' data-url="../read/index" bindtap='checkTabber'>
-      <view class='myTabber-item-icon esg-font icon-rizhi1'></view>
-      <view class='myTabber-item-text'>小说</view>
-    </view> -->
+    <view class='myTabber-item' data-url="../secret/index" bindtap='checkTabber'>
+      <view class='myTabber-item-icon esg-font icon-gongzuoriliguanli'></view>
+      <view class='myTabber-item-text'>秘密</view>
+    </view>
   </view>
 </template>

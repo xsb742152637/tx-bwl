@@ -13,10 +13,12 @@ const formatNumber = n => {
   n = n.toString()
   return n[1] ? n : '0' + n
 }
+
+const weekDaysTit = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"]
+
 //得到今天的星期
 const getWeekDay = date => {
-  const weekDays = ["周日","周一","周二","周三","周四","周五","周六"]
-  return weekDays[date.getDay()]
+    return weekDaysTit[date.getDay()]
 }
 //得到本周的周一
 const getMonDay = date => {
@@ -77,4 +79,4 @@ var showModel = (title, content) => {
     })
 }
 
-module.exports = { formatTime, showBusy, showSuccess, showModel, getWeekDay, getMonDay, getNextMonDay }
+module.exports = { formatTime, showBusy, showSuccess, showModel, weekDaysTit, getWeekDay, getMonDay, getNextMonDay }

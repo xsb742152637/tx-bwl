@@ -5,7 +5,8 @@
     "pages/note/write",
     "pages/shop/index",
     "pages/shop/write",
-    "pages/chart/index"
+    "pages/chart/index",
+    "pages/secret/index"
   ],
   "window":{
     "backgroundColor":"#F6F6F6",
