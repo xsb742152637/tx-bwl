@@ -1,0 +1,12 @@
+<!--pages/mysync/index.wxml-->
+<view class='my-row'>
+    <view class='my-cel-left'>秘密：</view>
+    <view class='my-cel-right'>
+        <view>
+            <view class="my-btn-upd" bindtap="upd" data-code="secret">上传数据</view>
+        </view>
+        <view>
+            <view class="my-btn-dow" bindtap="dow" data-code="secret">下载更新</view>
+        </view>
+    </view>
+</view>

@@ -16,5 +16,9 @@
       <view class='myTabber-item-icon esg-font icon-gongzuoriliguanli'></view>
       <view class='myTabber-item-text'>秘密</view>
     </view>
+    <view class='myTabber-item' data-url="../mysync/index" bindtap='checkTabber'>
+      <view class='myTabber-item-icon esg-font icon-wodegongzuoliu'></view>
+      <view class='myTabber-item-text'>同步</view>
+    </view>
   </view>
 </template>

@@ -1,0 +1,36 @@
+/* pages/mysync/index.wxss */
+page{
+    background-color: #f9f9f9;
+}
+.my-row{
+    display: flex;
+    margin-bottom: 1px;
+    padding: 10px;
+    background-color:#fff;
+}
+.my-cel-left{
+    width: 80px;
+    text-align:right;
+    padding:10px;
+}
+.my-cel-right{
+    flex:1;
+    display:flex;
+}
+.my-cel-right>view{
+    flex:1;
+    justify-content:center;
+    display:flex;
+}
+.my-cel-right>view>view{
+    width: 100px;
+    background-color: #99CCFF;
+    border: 1px solid #99CCFF;
+    color: #fff;
+    border-radius: 6px;
+    text-align:center;
+    height:30px;
+    padding-top:5px;
+    margin-top:8px;
+    font-size: 15px;
+}
