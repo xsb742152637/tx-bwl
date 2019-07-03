@@ -1,12 +1,23 @@
 <!--pages/mysync/index.wxml-->
-<view class='my-row'>
-    <view class='my-cel-left'>秘密：</view>
-    <view class='my-cel-right'>
-        <view>
-            <view class="my-btn-upd" bindtap="upd" data-code="secret">上传数据</view>
-        </view>
-        <view>
-            <view class="my-btn-dow" bindtap="dow" data-code="secret">下载更新</view>
+<form bindsubmit="formSubmit">
+    <view class='my-row'>
+        <view class='my-cel-left'>ip：</view>
+        <view class='my-cel-right'>
+            <input name="myIp" value='{{myIp}}' class="weui-input" placeholder='ip(必填)：'/>
         </view>
     </view>
-</view>
+    <view class='my-row'>
+        <view class='my-cel-left'>端口：</view>
+        <view class='my-cel-right'>
+            <input name="myPort" value='{{myPort}}' class="weui-input" placeholder='端口(必填)：'/>
+        </view>
+    </view>
+    <view class='top-button'>
+          <view class='wriete-button' >
+            <button class='wriete-button-add' form-type="submit" >
+              <view class='write-button-icon esg-font icon-baocun'></view>
+              <view class='write-button-text'>保存</view>
+            </button>
+          </view>
+        </view>
+</form>

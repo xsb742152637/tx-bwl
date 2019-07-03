@@ -14,7 +14,34 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        var str = wx.getStorageSync('syncinfo');
+        console.log(str);
+        if (str) {
+            var obj = JSON.parse(str);
+            this.setData({
+                myIp: obj.myIp,
+                myPort: obj.myPort
+            });
+        }
+    },
+    formSubmit: function(e){
+        //获得表单数据
+        var objData = e.detail.value;
+        if (objData.myIp && objData.myPort) {
+            util.showBusy('正在保存');
+            var str = '{"myIp":"' + objData.myIp + '","myPort":"' + objData.myPort + '"}';
 
+            // 同步方式存储表单数据
+            wx.setStorage({
+                key: 'syncinfo',
+                data: str
+            });
+            util.showSuccess('保存成功')
+            //跳转到成功页面
+            wx.navigateBack({
+                delta: 1
+            })
+        }
     },
     /**
      * 上传

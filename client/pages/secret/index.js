@@ -1,5 +1,6 @@
 // pages/secret/index.js
-var util = require('../../utils/util.js')
+var mysync = require('../../utils/mysync.js');
+var util = require('../../utils/util.js');
 Page({
 
     /**
@@ -12,14 +13,30 @@ Page({
         thisYear:2019,
         thisMonth:5,
         thisDayStr:"",
+        thisCycle: 28,
+        mensDiver: "准时来了",
         jqState:1//1:来了，0走了
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function(options) {
+    onLoad: function (options) {
+        // wx.setStorage({ key: "secret", data: {startTime:"2019-05-18"} });
         this.loadTbody();
+
+        //更新数据
+        // util.showBusy('正在同步');
+        mysync.upd_secret(this.callback);
+    },
+    callback: function (t) {
+        // console.log(type)
+        if (t) {
+            // util.showSuccess('同步成功');
+            this.loadTbody();
+        }else{
+            // util.showSuccess('同步失败')
+        }
     },
     /**
      * 来了
@@ -38,10 +55,10 @@ Page({
             d.setMonth(l[1] - 1);
             d.setDate(l[2]);
 
-            if ((d.getFullYear() == d1.getFullYear() && d.getMonth() == d1.getMonth() && d.getDate() > d1.getDate()) || (d.getFullYear() == d1.getFullYear() && d.getMonth() > d1.getMonth()) || d.getFullYear() > d1.getFullYear()) {
-                isError = true;
-                msg = "不能设置未来日期！";
-            }
+            // if ((d.getFullYear() == d1.getFullYear() && d.getMonth() == d1.getMonth() && d.getDate() > d1.getDate()) || (d.getFullYear() == d1.getFullYear() && d.getMonth() > d1.getMonth()) || d.getFullYear() > d1.getFullYear()) {
+            //     isError = true;
+            //     msg = "不能设置未来日期！";
+            // }
         }
 
         if (isError) {
@@ -55,15 +72,16 @@ Page({
                 }
             });
         }else{
-            
             try {
                 var p = this;
-                var str = '{"startTime":"' + this.data.thisDayStr + '"}';
+                var entity = {startTime:this.data.thisDayStr};
                 wx.setStorage({
                     key: "secret",
-                    data: str,
+                    data: entity,
                     success: function () {
                         p.loadTbody();
+                        //更新数据
+                        mysync.upd_secret(p.callback);
                     }
                 });
             } catch (e) {
@@ -114,7 +132,7 @@ Page({
      */
     loadTbody: function () {
         var rs = this.getDayCls();
-        // console.log(rs);
+        console.log(rs);
         var d = new Date();
         d.setFullYear(this.data.thisYear);
         d.setMonth(this.data.thisMonth);
@@ -165,6 +183,8 @@ Page({
         // console.log(ds);
         this.setData({
             days: ds,
+            thisCycle: this.data.thisCycle,
+            mensDiver: this.data.mensDiver,
             thisDayStr: thisDayStr
         });
     },
@@ -188,26 +208,41 @@ Page({
      * 根据最后一次日期得到本月及后1个月的状态
      */
     getDayCls: function () {
-        var lastJqStart = "";
-        try {
-            var str = wx.getStorageSync('secret');
-            if (str) {
-                var obj = JSON.parse(str);
-                lastJqStart = obj.startTime;
-            }
-        } catch (e) {
-            // Do something when catch error
-        }
+        var entity = wx.getStorageSync('secret');
+        // var entity = null;
+        // if (str) {
+        //     entity = JSON.parse(str);
+        // }
         
-        if (lastJqStart != "") {
+        if (entity && entity.startTime) {
+            try{
+                if (entity.mensDiver){
+                    var mensDiver = parseInt(entity.mensDiver);
+                    if (mensDiver > 0) {
+                        mensDiver = "延期 " + mensDiver + "天";
+                    } else if (mensDiver < 0) {
+                        mensDiver = "提前 " + (-mensDiver) + "天";
+                    } else {
+                        mensDiver = "准时来了"
+                    }
+                    this.data.mensDiver = mensDiver;
+                }
+            }catch(e){
+                console.log(e)
+            }
+
             //从上次月经开始，推算出到当前查看月份的下一个月的预测经期开始时间
             var ds = [];
-            var l = lastJqStart.split("-");
+            var l = entity.startTime.split("-");
             var d = new Date();
             d.setFullYear(l[0]);
             d.setMonth(l[1] - 1);
             d.setDate(l[2]);
-            var cycle = 30;//平均周期
+
+            var cycle = (entity == null || entity.mensCycle == null) ? 28 : parseInt(entity.mensCycle);//平均周期
+            this.data.thisCycle = cycle;
+            var duration = (entity == null || entity.duration == null) ? 3 : parseInt(entity.duration);//经期长度
+
             while(d.getFullYear() <= this.data.thisYear && d.getMonth() <= this.data.thisMonth + 1){
                 ds.push(this.getDateStr(d));
                 d.setDate(d.getDate() + cycle);
@@ -215,8 +250,6 @@ Page({
 
             // console.log(ds);
             var r = {};
-            var jqLength = 3;//经期长度
-
             var plqStart = 19;//排卵期开始。下次经期开始往前推14天是排卵日，排卵日的前五天后四天共十天为排卵期
             var plqLength = 10;//排卵期长度
             var plr = 6;//排卵期开始后的第几天是排卵日
@@ -229,21 +262,21 @@ Page({
 
                 var cls = "";
                 //实际经期与预测经期
-                for (var i = 0; i < jqLength; i++) {
+                for (var i = 0; i < duration; i++) {
                     if (i == 0) {
-                        if (m == 0 && d.getFullYear() == d1.getFullYear() && d.getMonth() == d1.getMonth() && d.getDate() <= d1.getDate()) {
+                        if (m == 0 && d <= d1) {
                             cls = "jq-sj jq-sj-start";//经期开始
                         } else {
                             cls = "jq-yc jq-yc-start";//预测经期开始
                         }
-                    } else if (i + 1 == jqLength) {
-                        if (m == 0 && d.getFullYear() == d1.getFullYear() && d.getMonth() == d1.getMonth() && d.getDate() <= d1.getDate()) {
+                    } else if (i + 1 == duration) {
+                        if (m == 0 && d <= d1) {
                             cls = "jq-sj jq-sj-end";//经期结束
                         } else {
                             cls = "jq-yc jq-yc-end";//预测经期结束
                         }
                     } else {
-                        if (m == 0 && d.getFullYear() == d1.getFullYear() && d.getMonth() == d1.getMonth() && d.getDate() <= d1.getDate()) {
+                        if (m == 0 && d <= d1) {
                             cls = "jq-sj";//经期中途
                         } else {
                             cls = "jq-yc jq-yc-center";//预测经期中途

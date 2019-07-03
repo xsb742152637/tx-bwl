@@ -30,7 +30,7 @@ Page({
    */
   onLoad: function (options) {
     // wx.navigateTo({
-    //   url: '../mysync/index'
+    //   url: '../secret/index'
     // })
   },
 
