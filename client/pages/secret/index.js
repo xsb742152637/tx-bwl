@@ -22,6 +22,9 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        var d = new Date();
+        this.data.thisYear = d.getFullYear();
+        this.data.thisMonth = d.getMonth();
         // wx.setStorage({ key: "secret", data: {startTime:"2019-05-18"} });
         this.loadTbody();
 
@@ -55,10 +58,10 @@ Page({
             d.setMonth(l[1] - 1);
             d.setDate(l[2]);
 
-            // if ((d.getFullYear() == d1.getFullYear() && d.getMonth() == d1.getMonth() && d.getDate() > d1.getDate()) || (d.getFullYear() == d1.getFullYear() && d.getMonth() > d1.getMonth()) || d.getFullYear() > d1.getFullYear()) {
-            //     isError = true;
-            //     msg = "不能设置未来日期！";
-            // }
+            if ((d.getFullYear() == d1.getFullYear() && d.getMonth() == d1.getMonth() && d.getDate() > d1.getDate()) || (d.getFullYear() == d1.getFullYear() && d.getMonth() > d1.getMonth()) || d.getFullYear() > d1.getFullYear()) {
+                isError = true;
+                msg = "不能设置未来日期！";
+            }
         }
 
         if (isError) {
