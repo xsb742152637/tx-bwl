@@ -13,7 +13,7 @@ Page({
         thisYear:2019,
         thisMonth:5,
         thisDayStr:"",
-        thisCycle: 28,
+        thisCycle: 30,
         mensDiver: "准时来了",
         jqState:1//1:来了，0走了
     },
@@ -242,7 +242,7 @@ Page({
             d.setMonth(l[1] - 1);
             d.setDate(l[2]);
 
-            var cycle = (entity == null || entity.mensCycle == null) ? 28 : parseInt(entity.mensCycle);//平均周期
+            var cycle = (entity == null || entity.mensCycle == null) ? 30 : parseInt(entity.mensCycle);//平均周期
             this.data.thisCycle = cycle;
             var duration = (entity == null || entity.duration == null) ? 3 : parseInt(entity.duration);//经期长度
 

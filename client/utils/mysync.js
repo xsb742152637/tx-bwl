@@ -19,7 +19,7 @@ const upd_secret = callback => {
     if(url){
         wx.request({
             url: url, //仅为示例，并非真实的接口地址
-            data: { startTime: startTime },
+            data: { startTime: "" },
             method: "POST",
             success(res) {
                 // console.log("bbbb");
